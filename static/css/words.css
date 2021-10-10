@@ -155,4 +155,7 @@ table, .pagination{
     #search_form_input{
         width: 200px;
     }
+    .li_span_p_word_tool {
+        max-width: 150px;
+    }
 }

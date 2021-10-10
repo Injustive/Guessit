@@ -13,13 +13,10 @@ for (let i=0; i<audio.length; i++){
 }
 
 function play_voice(word) {
-    function clean_word(word){
-        return word.replace('/', ',')
-    }
     let synth = window.speechSynthesis,
     message = new SpeechSynthesisUtterance();
     message.lang = 'en-US';
-    message.text = clean_word(word);
+    message.text = word.replace('/', ',')
     message.voice = appropriate_voices[0];
     message.rate = 0.9;
     synth.speak(message);

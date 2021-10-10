@@ -16,9 +16,23 @@ let voiceSelect = document.querySelector('select');
 let stat = undefined;
 let Statistic_w = undefined;
 
-window.speechSynthesis.onvoiceschanged = function() {
-    let voices = window.speechSynthesis.getVoices();
-    let appropriate_voices = voices.filter(word => word.lang === "en-US" || word.lang === "en-GB");
+const getVoices = () => {
+  return new Promise(resolve => {
+    let voices = speechSynthesis.getVoices();
+    if (voices.length) {
+      resolve(voices);
+      return
+    }
+    speechSynthesis.onvoiceschanged = () => {
+      voices = speechSynthesis.getVoices();
+      resolve(voices);
+    }
+  })
+}
+
+const configure_voice_select = async () => {
+    let voices = await getVoices();
+    let appropriate_voices = voices.filter(voice => voice.lang === "en-US" || voice.lang === "en-GB");
     for(let i of appropriate_voices.reverse()) {
         var option = document.createElement('option');
         option.textContent = i.name + ' (' + i.lang + ')';
@@ -26,8 +40,9 @@ window.speechSynthesis.onvoiceschanged = function() {
         option.setAttribute('data-name', i.name);
         voiceSelect.appendChild(option);
     }
-};
+}
 
+configure_voice_select();
 
 $(".setings-dropdown-content").hover(
     function () {
@@ -138,7 +153,7 @@ function get_word() {
                 if (is_learned) {
                     $('#is_learned').show();
                 }
-                console.log(word['word']);
+                // console.log(word['word']);
                 get_example(word);
 
                 if (stat) {
@@ -215,13 +230,7 @@ function play_voice(text, rate = 1.4, pitch=0.8, callback = undefined) {
     let synth = window.speechSynthesis;
     let voices = synth.getVoices();
     let message = new SpeechSynthesisUtterance();
-
-    let selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
-    for(let i = 0; i < voices.length ; i++) {
-        if(voices[i].name === selectedOption) {
-          message.voice = voices[i];
-        }
-    }
+    message.lang = 'en-US';
     message.pitch = pitch;
     message.text = clean_text;
     message.rate = rate;
@@ -230,9 +239,15 @@ function play_voice(text, rate = 1.4, pitch=0.8, callback = undefined) {
             callback();
         }
     }
-
-    synth.speak(message);
-
+    if (voiceSelect.length) {
+        let selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
+        for(let i = 0; i < voices.length ; i++) {
+            if(voices[i].name === selectedOption) {
+              message.voice = voices[i];
+            }
+        }
+    }
+    synth.speak(message)
 }
 
 function action_after_answer(cls) {
