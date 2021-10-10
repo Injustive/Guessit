@@ -1,0 +1,38 @@
+{% load static %}
+<div class="stat">
+    <div class="plots">
+        <div class="dates">
+            <canvas id="date-chart"></canvas>
+        </div>
+    </div>
+    <div class="other_stat">
+        <div class="other_stat_text">
+            <div class="lvl_progress stat_text" style="white-space: normal">
+                Уровень запоминания слова: <span class='stat_span' id="lvl_progress"></span>
+            </div>
+            <div class="coeff_progress stat_text" style="white-space: normal">
+                Коэффициент уровня: <span class='stat_span' id="coeff_progress"></span>
+            </div>
+            <div class="all-answers">
+                <canvas id="pie-chart"></canvas>
+            </div>
+            <div class="correct_answers_row stat_text">
+                Правильных ответов подряд: <span class='stat_span' id="correct_answers_row"></span>
+            </div>
+            <div class="created_at stat_text">
+                Карточка создана: <span class='stat_span' id="created_at"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="no_stat">
+    <div class="rounded mx-auto d-block" style='margin-top: 7%;text-align: center;'>
+        <a style="text-decoration: none;"><img style="width: 15%;min-width: 50px; max-width: 90px; margin-bottom: 20px" src="https://img.icons8.com/ios/100/000000/add-property.png"/></a>
+        <h4>Еще нет статистики для этого слова</h4>
+        <h6>Впишите ответ, чтобы начать</h6>
+    </div>
+</div>
+<a class="fa-fa-icon">
+    <i class="fa fa-undo" id="back_to_inp"></i>
+</a>

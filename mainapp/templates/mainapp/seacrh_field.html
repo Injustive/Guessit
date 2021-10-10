@@ -1,0 +1,34 @@
+{% load mainapp_tags %}
+{% load static %}
+
+{% for word in search_words %}
+    <li class="list-group-item">
+        <span class="li_span_word_tool"><p class="li_span_p_word_tool">{{ word.word }} - {{ word.translation }}</p></span>
+        <span class="li_span_icons_tool">
+            {% if word|has_stat:request.user %}
+                <a class="fa_fa_icon" title="Статистика" style="cursor: pointer" onclick="show_stat({{ word.pk }})"><i class="fa fa-bar-chart stat_icon"></i></a>
+            {% else %}
+                <a class="fa_fa_icon" title="Нет статистика" style="cursor: not-allowed"><i class="fa fa-bar-chart stat_icon stat_disabled" style="color: grey"></i></a>
+            {% endif %}
+            <i class="fa fa-volume-up" onclick="play_voice('{{ word.word }}')"></i>
+            {% if request.GET.words_type == 'all_words' %}
+                {% if word|is_own_word:request.user %}
+                     <i class="fa fa-check" aria-hidden="true" style="color: green"></i>
+                {% else %}
+                     <a class="fa_fa_icon" href="{% url 'add_to_own_words' word.id %}" title="Добавить в свои слова">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                {% endif %}
+            {% endif %}
+            {% if request.GET.words_type == 'own_words' %}
+                <a class="fa_fa_icon" href="{% url 'update_words' word.slug %}" title="Редактировать">
+                    <i class="fa fa-pencil fa-fw"></i>
+                </a>
+                <a class="fa_fa_icon" title="Удалить" onclick="delete_modal_form(document.getElementById('delete_word_modal_{{word.id}}'))">
+                    <i class="fa fa-trash-o fa-fw trash_icon" id='trash_icon_{{word.id}}'></i>
+                </a>
+            {% endif %}
+        </span>
+        {% include 'tools/delete_word_modal.html' %}
+    </li>
+{% endfor %}

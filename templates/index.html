@@ -1,0 +1,70 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta property="og:locale" content="en"/>
+    <meta http-equiv="Accept-Language" content="en">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}GuessIt{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/font-awesome/css/font-awesome.min.css' %}">
+{#    <link rel="stylesheet" href="{% static 'css/font_formular/stylesheet.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+    <link href="{% static 'css/toast.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/0.6.1/progressbar.min.js" integrity="sha512-7IoDEsIJGxz/gNyJY/0LRtS45wDSvPFXGPuC7Fo4YueWMNOmWKMAllEqo2Im3pgOjeEwsOoieyliRgdkZnY0ow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.11.0/jquery.typeahead.min.js" integrity="sha512-Rc24PGD2NTEGNYG/EMB+jcFpAltU9svgPcG/73l1/5M6is6gu3Vo1uVqyaNWf/sXfKyI0l240iwX9wpm6HE/Tg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js" integrity="sha512-TToQDr91fBeG4RE5RjMl/tqNAo35hSRR4cbIFasiV2AAMQ6yKXXYhdSdEpUcRE6bqsTiB+FPLPls4ZAFMoK5WA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'js/jquery_ui/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript" src="https://andywer.github.io/jquery-dim-background/jquery.dim-background.min.js"></script>
+  </head>
+
+  <body>
+    <div class="preloader">
+        <div class="preloader__loader">
+            <hr/><hr/><hr/><hr/>
+        </div>
+    </div>
+  {% block navbar %}
+  {% include 'inc/_nav.html' %}
+  {% endblock %}
+  {% if messages %}
+    {% for message in messages %}
+          {% if message.tags == 'error' %}
+          <div class="toast" style="background: #FF5A62;">{{message}}</div>
+          {% else %}
+          <div class="toast" style="background: #8db600;">{{message}}</div>
+          {% endif %}
+    {% endfor %}
+  {% endif %}
+    {% block content %}
+    {% endblock %}
+    <script src="{% static 'js/toast.js' %}"></script>
+    <script src="{% static 'js/login_register.js' %}"></script>
+  <script>
+
+$(document).ready(function($) {
+    function onReady() {
+        let preloader = $('.preloader');
+        let loader = preloader.find('.preloader__loader');
+        loader.fadeOut();
+		preloader.delay(250).fadeOut(200);
+    }
+    if (document.readyState !== "loading") {
+        onReady();
+    } else {
+        document.addEventListener("DOMContentLoaded", onReady);
+    }
+ });
+</script>
+  </body>
+</html>

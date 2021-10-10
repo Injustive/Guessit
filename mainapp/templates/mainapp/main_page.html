@@ -1,0 +1,72 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/main_page.css' %}">
+    <div class="site_name">
+        <h1 id="site_name_h1">Guessit</h1>
+        <h4 class="site_name_desc">Сайт для изучения английского языка</h4>
+    </div>
+    <div class="wrapper">
+    <h2 class="title">Почему мы?</h2>
+    <div class="menu-content">
+        <div class="card ld">
+            <div class="inner_card">
+                <img class='img_cards' src="{% static 'images/stat.png' %}"/>
+                <h4 class="card_img_desc">Подробная статистика</h4>
+                <p class="card_feature">На нашем сайте есть возможность просматривать подробную статистику для каждого слова.</p>
+            </div>
+        </div>
+        <div class="card rd">
+            <div class="inner_card">
+                <img class='img_cards' src="{% static 'images/dictionary.png' %}"/>
+                <h4 class="card_img_desc">5000+</h4>
+                <p class="card_feature">В базе данных Guessit более 5000 абсолютно разных слов и словосочетаний.</p>
+            </div>
+        </div>
+        <div class="card rd">
+            <div class="inner_card">
+                <img class='img_cards' src="{% static 'images/voice.png' %}"/>
+                <h4 class="card_img_desc">Озвучка "под ключ"</h4>
+                <p class="card_feature">Настраивайте озвучку, которая вам нравится, а также тембр и скорость воспроизведения голоса.</p>
+            </div>
+        </div>
+        <div class="card ld">
+            <div class="inner_card">
+                <img class='img_cards' src="{% static 'images/idea.png' %}"/>
+                <h4 class="card_img_desc">Свои слова</h4>
+                <p class="card_feature">Добавляйте, редактируйте, удаляйте, изучайте свои собственные слова.</p>
+            </div>
+        </div>
+    </div>
+    <h3 class="title">Метод интервального повторения</h3>
+    <div class="interval_method">
+        <img class="img_algorithm_img" src="{% static 'images/algorithm.png' %}"/>
+        <p class="alg_desc">Наш сайт использует метод интервального повторения для еффективного и быстрого изучения слов.</p>
+        <p class="alg_desc"><span class="interval_repeat_sp">Интервальное повторение</span> - техника удержания в памяти, заключающаяся в повторении запомненного учебного материала по определённым,
+        постоянно возрастающим интервалам. Хотя этот принцип может найти применение для запоминания любой информации,
+        наиболее широкое распространение он получил при изучении иностранных языков.
+        Интервальные повторения не предполагают заучивания наизусть без понимания (но и не исключают его), и не противопоставляются мнемонике.
+        </p>
+    </div>
+    <h3 class="title">Предложения и улучшения</h3>
+    <div class="updates_improves">
+        <p class="updates_text">Наши разработчики постоянно пытаются сделать сайт лучше.
+            Если у вас есть вопросы или предложения - пишите на почту, мы вам с радостью ответим
+        </p>
+    </div>
+    </div>
+    <footer class="site_footer">
+        <div class="logo footer_text">
+            Ⓒ 2021 Guessit
+        </div>
+        <div class="contacts footer_text">
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            Email - guessitaskme@gmail.com
+        </div>
+        <div class="media footer_text">
+            <i class="fa fa-telegram" aria-hidden="true"></i>
+            <a href="tg://resolve?domain=Injustive">Telegram</a>
+        </div>
+    </footer>
+{% endblock %}

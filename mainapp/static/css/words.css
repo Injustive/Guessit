@@ -1,0 +1,161 @@
+.fa_fa_icon {
+    color: black;
+    /*margin-right: 4px;*/
+    text-decoration: none;
+}
+
+.autocomplete-suggestions li a:hover {
+    color: 	#2E8B57;
+    font-size: 18px;
+}
+
+.trash_icon:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.delete-word-modal {
+    display: none;
+    position: fixed;
+    top:30%;
+    left:50%;
+    transform:translate(-50%, -50%);
+}
+
+.hide_word {
+    max-width: 60px;
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+}
+
+.hide_word:hover {
+    max-width: initial;
+    white-space: normal; /* Обычный перенос текста */
+}
+
+.fa-volume-up {
+    margin-right: 4px;
+}
+
+.fa-volume-up:hover {
+    cursor: pointer;
+    color: blue;
+}
+
+table tr > *:nth-child(1) {
+    display: none;
+}
+
+.stat_disabled{
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.modal-dialog {
+    margin: 0;
+}
+
+#delete_modal_h {
+    overflow-x: hidden;
+    white-space: normal;
+    font-size: calc(12px + .5vw);
+}
+
+#search_form_input {
+    width: 300px;
+    font-size: calc(8px + .5vw);
+}
+
+/*.btns_wrap{*/
+/*    display: flex;*/
+/*    margin: 5px;*/
+/*    justify-content: center;*/
+/*}*/
+
+.search_words {
+    margin-top: 1.1%;
+    margin-right: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: relative;
+}
+
+table, .pagination{
+    font-size: calc(8px + .5vw);
+}
+
+.form-control {
+    margin-right: 0!important;
+}
+#dropdown_search {
+    position: relative;
+}
+#drp_dwn_ul_search {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 42px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-radius: 5px;
+}
+
+.list-group-item {
+    padding: 10px 6px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: calc(8px + .5vw);
+    background-color: #E6FFFF;
+    border-bottom: 2px solid #96E1D8;
+}
+
+
+.li_span_p_word_tool {
+    margin: 0;
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+    max-width: 195px;
+    align-self: flex-start;
+}
+
+
+.list-group-item:hover{
+    background-color: #96E1D8;
+}
+
+.li_span_icons_tool *{
+    margin: 0;
+}
+
+@media all and (max-width: 400px) and (min-width: 50px) {
+    .hide_word {
+        padding-left: 0!important;
+        padding-right: 0!important;
+    }
+    .fa_fa_icon {
+        margin: 0;
+    }
+    .col-md-7 {
+        margin: 1px!important;
+    }
+    .fa-volume-up {
+        margin-right: 0;
+    }
+    th {
+        padding: 0!important;
+    }
+    .pagination a.page-link {
+        padding: 5px 3px;
+    }
+    #search_form_input{
+        width: 200px;
+    }
+    .li_span_p_word_tool {
+        max-width: 150px;
+    }
+}

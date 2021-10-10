@@ -1,0 +1,96 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Изучение{% endblock %}
+{% block content %}
+    {% if is_words_exist %}
+    <link rel="stylesheet" href="{% static 'css/flip-card.css' %}">
+    <link rel="stylesheet" href="{% static 'css/statistic.css' %}">
+    <div class="settings-container">
+      <i class="fa fa-cog settings-icon" aria-hidden="true"></i>
+      <div class="setings-dropdown-content">
+          <div class="volume-box">
+              <i class="fa fa-fast-forward" aria-hidden="true"></i>
+              <input type="checkbox" id="example_skip_check" name="example_skip_check" checked>
+              <label for="example_skip_check">Пропуск примера</label>
+          </div>
+          <div class="volume-box">
+              <i class="fa fa-volume-up" aria-hidden="true"></i>
+              <input type="range" id="word-volume" name="word-volume" step="0.1" min="0.1" max="2" value="1">
+              <label for="word-volume">Скорость озвучки слова</label>
+          </div>
+          <div class="volume-box">
+              <i class="fa fa-volume-up" aria-hidden="true"></i>
+              <input type="range" id="sentence-volume" name=sentence-volume" value="1" step="0.1" min="0.1" max="2">
+              <label for="sentence-volume">Скорость озвучки примера</label>
+          </div>
+          <div class="volume-box">
+              <i class="fa fa-volume-up" aria-hidden="true"></i>
+              <input type="range" id="timbre" name=timbre" value="0.9" step="0.1" min="0.6" max="1.6">
+              <label for="timbre">Тембр</label>
+          </div>
+          <div class="volume-box">
+              <i class="fa fa-microphone" aria-hidden="true"></i>
+                <select name="choice-voice" id="choice-voice"></select>
+               <label for="choice-voice">Голос озвучки</label>
+          </div>
+      </div>
+    </div>
+    <div class="col-md-7" style="margin: 2.5% auto;">
+        <div class="card-f">
+            <div class="card__face card__face--front">
+                <div class="answer_container">
+                    <div class="form-answer">
+                        <form onsubmit="submit_answer_form(); return false" method="POST" action="{% url 'return_new_word_in_input' %}" name="form_send_answer">
+                            {% csrf_token %}
+                            <input class="form-control shadow-none" autofocus type="text" id="answer" placeholder="" name="answer" autocomplete="off">
+                        </form>
+                        <div class="translation-row">
+                            <span class="translation"></span>
+                        </div>
+                    </div>
+                    <div class="example">
+                        <div class="example-en">
+                            <span></span>
+                        </div>
+                        <div class="example-ru">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <p id="new_word">
+                    <i class="fa fa-bell" aria-hidden="true"></i>
+                    <span>Новое слово!</span>
+                </p>
+                <a class="fa-fa-icon">
+                    <i class="fa fa-bar-chart" id="chart_rotate_icon"></i>
+                </a>
+                <div id="skip_example">
+                    <i class="fa fa-angle-right" id='skip_example_icon' aria-hidden="true"></i>
+                </div>
+            <div id="progress"></div>
+            <hr id="is_learned">
+            <div class="daily_stat_icons">
+                <div class="circle" id="new_words">
+                    <div class="circle__number"><a id="new_words_a" title="Новых слов за сегодня"></a></div>
+                </div>
+                <div class="circle" id="all_words">
+                    <div class="circle__number"><a id="all_words_a" title="Всего карточек за сегодня"></a></div>
+                </div>
+            </div>
+            </div>
+            <div class="card__face card__face--back">
+                {% include 'tools/statistic.html' %}
+            </div>
+    </div>
+    </div>
+    <script src="{% static 'js/flip-card.js' %}"></script>
+    <script src="{% static 'js/learning.js' %}"></script>
+    <script src="{% static 'js/statistic.js' %}"></script>
+    {% else %}
+        <div class="rounded mx-auto d-block" style='margin-top: 10%; text-align: center;'>
+            <a href="{% url 'add_words' %}" style="text-decoration: none;"><img style="margin-bottom: 20px" src="https://img.icons8.com/ios/100/000000/add-property.png"/></a>
+            <h4>У вас еще нет добавленых слов</h4>
+            <h6>Нажмите <a href="{% url 'add_words' %}" style="color: black">создать</a>, чтобы добавить новое слово</h6>
+        </div>
+    {% endif %}
+{% endblock %}

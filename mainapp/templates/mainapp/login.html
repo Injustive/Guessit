@@ -1,0 +1,53 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Начать{% endblock %}
+
+
+{% block navbar %}{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/login_register.css' %}">
+<link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+<div class="overlay">
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="con">
+            <header class="head-form">
+                <h2>Вход</h2>
+                <p>Войдите или зарегистрируйтесь</p>
+            </header>
+
+            <div class="field-set">
+                <div class="input_field">
+                     <span class="input-item">
+                       <i class="fa fa-user-circle"></i>
+                     </span>
+                    <input class="form-input" id="txt-input" type="text" placeholder="Имя пользователя" name="username" required>
+                </div>
+                <div class="input_field">
+                    <span class="input-item">
+                        <i class="fa fa-key"></i>
+                    </span>
+                        <input class="form-input" type="password" placeholder="Пароль" id="pwd" name="password" required>
+                    <span class="input-item">
+                        <i class="fa fa-eye" aria-hidden="true" id="eye"></i>
+                    </span>
+                </div>
+                <div class="btn_submit">
+                    <button type=submit class="log-in">Войти</button>
+                </div>
+            </div>
+            {% if form.errors %}
+            <div class="alert alert-danger" style='text-align: center' role="alert">Логин или пароль неверные, пожалуйста введите корректные данные</div>
+            {% endif %}
+        </div>
+        <div class="other">
+            <a href="{% url 'register' %}" class="mylink">Создать
+                <i class="fa fa-user-plus" aria-hidden="true"></i>
+            </a>
+        {#  <button class="submits frgt-pass"><a href="{%  %}">Забыли пароль?</a></button>#}
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+

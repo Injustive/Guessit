@@ -1,0 +1,19 @@
+.container_form {
+    width: 500px;
+    margin: 100px auto;
+    background: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
+    border-radius: 20px;
+    padding: 15px;
+}
+
+#form_title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+@media all and (max-width: 500px) and (min-width: 50px) {
+    .container_form {
+        width: 100%;
+    }
+}

@@ -1,0 +1,53 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'index' %}">
+        <img  id="logo" src="{% static 'images/logo.svg' %}">
+    </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" id="blog" disabled aria-current="page">Блог</a>
+            </li>
+            {% if user.is_authenticated %}
+            <div class="dropdown">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page">Изучение</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'learning' %}?words=all_words">Всех слов</a>
+                        <a href="{% url 'learning' %}?words=own_words">Своих слов</a>
+                    </div>
+                </li>
+            </div>
+
+            <div class="dropdown">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page">Слова</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'words' %}?words=all_words">Все слова</a>
+                        <a href="{% url 'words' %}?words=own_words">Свои слова</a>
+                        <a href="{% url 'add_words' %}">Добавить слова</a>
+                    </div>
+                </li>
+            </div>
+            <a class="nav-link active" href="{% url 'general_stat' %}" aria-current="page">Статистика</a>
+            {% endif %}
+        </ul>
+        {% if user.is_authenticated %}
+        <div class="logindiv">
+        <a href="{% url 'logout' %}" class="mybtn">Выход</a>
+        </div>
+        {% else %}
+        <div class="logindiv">
+        <a href="{% url 'login' %}" class="mybtn">Начать</a>
+        </div>
+        {% endif %}
+    </div>
+
+</nav>
+

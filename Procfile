@@ -1,0 +1,1 @@
+web: gunicorn guessit.wsgi --log-file -

@@ -1,0 +1,86 @@
+.stat{
+    display: none;
+    flex-direction: column;
+    height: inherit;
+    width: 100%;
+}
+.plots {
+    width: 100%;
+    /*margin: 10px 0;*/
+    height: 300px;
+    min-height: 150px;
+}
+
+.dates {
+    width: 100%;
+    min-width: 10px;
+    margin: 5px auto;
+    height: 100%;
+    min-height: 150px;
+    border-bottom: 3px solid skyblue;
+    border-radius: 15px;
+}
+
+.other_stat{
+    margin: 10px auto 0 auto;
+    width: 100%;
+    display: flex;
+    background-color: lightblue;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.all-answers{
+    max-width: 18%;
+}
+
+.other_stat_text{
+    display: flex;
+}
+
+.other_stat_text div{
+    margin: auto;
+    width: calc(( 100% - 40px ));
+}
+
+.other_stat_text div span{
+    white-space: pre;
+}
+.stat_text{
+    font: calc(8px + .5vw) Arial;
+    vertical-align: center;
+    text-align: center;
+}
+
+mark {
+    border-radius: 5px;
+    background-color: lightpink;
+}
+
+.stat_span{
+    font: bold calc(10px + .5vw) Arial;
+    display: block;
+}
+
+.no_stat {
+    margin-top: 5%;
+}
+
+@media all and (max-width: 400px) and (min-width: 50px) {
+    .other_stat_text{
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    .all-answers{
+        max-width: 100px;
+    }
+}
+
+@media all and (max-width: 700px) and (min-width: 50px) {
+    .search_words{
+        align-items: center;
+        margin-right: 0;
+    }
+}

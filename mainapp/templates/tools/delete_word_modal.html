@@ -1,0 +1,14 @@
+<div class="modal-dialog delete-word-modal" id="delete_word_modal_{{word.id}}">
+    <div class="modal-content">
+        <div class="modal-body">
+            <form action="{% url 'delete_word' word.id %}" method="post">
+                {% csrf_token %}
+                <h4  id="delete_modal_h">Вы уверены, что хотите удалить слово <span style="color: red;">{{ word.word }}</span> ?</h4>
+                <div class="btns_wrap">
+                <button type="submit" class="btn btn-danger btn-sm" style="margin-right: 10px">Удалить</button>
+                <button type="button" class="btn btn-secondary close_modal_form btn-sm">Отмена</button>
+                </div>
+            </form>
+       </div>
+    </div>
+</div>

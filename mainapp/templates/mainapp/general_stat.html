@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Общая статистика{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/general_stat.css' %}">
+    <div class="col-md-7" style="margin: 2.5% auto;">
+        <input id="general_stat_input" type="hidden" value="{{ general_stat }}">
+        <div class="card-f">
+            <div class="card__face card__face--back">
+                <div class="plots">
+                    <div class="dates">
+                        <canvas id="all_answers_chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-f">
+            <div class="card__face card__face--back">
+                <div class="plots">
+                    <div class="dates">
+                        <canvas id="c_i_answers_chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-f">
+            <div class="card__face card__face--back">
+                <div class="plots">
+                    <div class="dates">
+                        <canvas id="n_l_charts"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="{% static 'js/general_stat.js' %}"></script>
+{% endblock %}
