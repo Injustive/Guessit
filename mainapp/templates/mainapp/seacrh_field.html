@@ -6,7 +6,7 @@
         <span class="li_span_word_tool"><p class="li_span_p_word_tool">{{ word.word }} - {{ word.translation }}</p></span>
         <span class="li_span_icons_tool">
             {% if word|has_stat:request.user %}
-                <a class="fa_fa_icon" title="Статистика" style="cursor: pointer" onclick="show_stat({{ word.pk }})"><i class="fa fa-bar-chart stat_icon"></i></a>
+                <a class="fa_fa_icon" title="Статистика" style="cursor: pointer" onclick="show_stat('{% url 'word_stat_api' word.id%}', '{% url 'word_dates_stat_api' word.id%}')"><i class="fa fa-bar-chart stat_icon"></i></a>
             {% else %}
                 <a class="fa_fa_icon" title="Нет статистика" style="cursor: not-allowed"><i class="fa fa-bar-chart stat_icon stat_disabled" style="color: grey"></i></a>
             {% endif %}
@@ -21,7 +21,7 @@
                 {% endif %}
             {% endif %}
             {% if request.GET.words_type == 'own_words' %}
-                <a class="fa_fa_icon" href="{% url 'update_words' word.slug %}" title="Редактировать">
+                <a class="fa_fa_icon" href="{% url 'update_words' word.pk %}" title="Редактировать">
                     <i class="fa fa-pencil fa-fw"></i>
                 </a>
                 <a class="fa_fa_icon" title="Удалить" onclick="delete_modal_form(document.getElementById('delete_word_modal_{{word.id}}'))">

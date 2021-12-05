@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 class WordsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'word', 'translation', 'engex', 'rusex', 'author', 'slug')
+    list_display = ('id', 'word', 'translation', 'engex', 'rusex', 'author')
     list_display_links = ('word', 'author')
     search_fields = ('word', 'translation', 'engex', 'rusex')
 

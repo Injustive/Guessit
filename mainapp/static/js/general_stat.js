@@ -125,28 +125,51 @@ const n_l_answers_settings = [
         pointBackgroundColor: "#ace1af"
     }
 ]
-let general_stat = JSON.parse($('#general_stat_input').val());
 
-let all_answers_chart = new Stat(general_stat);
-all_answers_chart.plot(
-    "all_answers_chart",
-    ['all_words'],
-    all_answers_settings,
-    "Количество карточек в день"
-);
+let general_stat_url = $('#general_stat_input').attr('data-general-stat-url');
 
-let c_r_answers_chart = new Stat(general_stat);
-c_r_answers_chart.plot(
-    "c_i_answers_chart",
-    ['correct_answers', 'incorrect_answers'],
-    c_r_answers_settings,
-    "Статистика правильных и неправильных ответов"
-);
+function plot_general_stat(){
+    function get_general_stat(){
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: "GET",
+                url: general_stat_url,
+                success: function (data) {
+                    let stat = data['results'];
+                    resolve(stat);
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        });
+    }
 
-let n_l_charts = new Stat(general_stat);
-n_l_charts.plot(
-    'n_l_charts',
-    ['new_words', 'learned_words'],
-    n_l_answers_settings,
-    "Статистика новых и выученых слов"
-);
+    get_general_stat().then((general_stat) => {
+        let all_answers_chart = new Stat(general_stat);
+        all_answers_chart.plot(
+            "all_answers_chart",
+            ['all_words'],
+            all_answers_settings,
+            "Количество карточек в день"
+        );
+
+        let c_r_answers_chart = new Stat(general_stat);
+        c_r_answers_chart.plot(
+            "c_i_answers_chart",
+            ['correct_answers', 'incorrect_answers'],
+            c_r_answers_settings,
+            "Статистика правильных и неправильных ответов"
+        );
+
+        let n_l_charts = new Stat(general_stat);
+        n_l_charts.plot(
+            'n_l_charts',
+            ['new_words', 'learned_words'],
+            n_l_answers_settings,
+            "Статистика новых и выученых слов"
+        );
+    })
+}
+
+plot_general_stat();

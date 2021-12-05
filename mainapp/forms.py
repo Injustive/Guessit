@@ -59,19 +59,20 @@ class UserRegisterForm(UserCreationForm):
 
 
 class AddEditWordForm(forms.ModelForm):
-    def __init__(self, user=None, validate_word_and_slug=True, *args, **kwargs):
-        if user is not None:
-            self.user = user
-        self.validate = validate_word_and_slug  # Проверка слага на уникальность
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+         self.user = kwargs.pop('user', None)
+         super().__init__(*args, **kwargs)
 
     def clean(self):
-        slug = slugify(f'{self.cleaned_data["word"]}-{self.cleaned_data["translation"]}-{self.user}')
+        word = self.cleaned_data['word']
+        translation = self.cleaned_data['translation']
 
-        if Words.objects.filter(slug=slug).exists() and self.validate:
-            raise ValidationError('Похоже, данное слово и перевод уже существует, введите другое слово.')
-        self.cleaned_data['slug'] = slug
-        super(AddEditWordForm, self).clean()
+        if Words.objects.filter(
+                word=word,
+                translation=translation,
+                author=self.user
+        ).exists():
+            raise ValidationError('Похоже данное слово и перевод уже существует, введите другое слово.')
 
     class Meta:
         model = Words
@@ -84,3 +85,4 @@ class AddEditWordForm(forms.ModelForm):
             'engex': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Только латинница"}),
             'rusex': forms.TextInput(attrs={'class': 'form-control', 'placeholder': "Только кириллица"}),
         }
+

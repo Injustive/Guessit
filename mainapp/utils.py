@@ -35,18 +35,17 @@ class AddEditWordMixin:
     form_class = AddEditWordForm
 
     def get_form(self, form_class=None):
-        return self.form_class(**self.get_form_kwargs(), user=self.request.user, error_class=CustomErrorList)
+        return self.form_class(**self.get_form_kwargs(), error_class=CustomErrorList, user=self.request.user)
 
     def get_success_url(self):
-        return f"{reverse('words')}?words=own_words"
+        return f"{reverse('words')}"
 
     def form_valid(self, form, msg):
         instance = form.save(commit=False)
-        instance.slug = form.cleaned_data['slug']
         instance.author = self.request.user
         instance.save()
         messages.success(self.request, f"Слово '{form.cleaned_data['word'].title()}' успешно {msg}")
-        return super().form_valid(instance)
+        return super().form_valid(form)
 
     def form_invalid(self, form, msg):
         messages.error(self.request, f"Ошибка {msg}")

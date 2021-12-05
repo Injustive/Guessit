@@ -1,32 +1,18 @@
 from django.contrib import messages
-from django.core import serializers
 from django.db.models import Q
 from django.db.models.functions import Length
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.base import View
 from django.middleware.csrf import get_token
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from pattern import en
-from django.forms.models import model_to_dict
-import json
-from django.core.serializers.json import DjangoJSONEncoder
-from slugify import slugify
 
 from .forms import UserRegisterForm
-from .learn_algorithm import *
 from .models import *
 from .utils import CustomErrorList
 from .utils import GetWordsMixin, AddEditWordMixin
-import functools
-
-def index(request):
-    """Главная страница сайта"""
-
-    return render(request, 'mainapp/main_page.html')
-
 
 class WordsView(GetWordsMixin, ListView):
     """Просмотр списка слов"""
@@ -52,12 +38,11 @@ class WordsUpdateView(AddEditWordMixin, UpdateView):
     template_name = 'mainapp/edit_words.html'
 
     def get_form(self, form_class=None):
-        return self.form_class(**self.get_form_kwargs(), user=self.request.user, validate_word_and_slug=False,
-                               error_class=CustomErrorList)
+        return self.form_class(**self.get_form_kwargs(), error_class=CustomErrorList)
 
     def get_object(self, queryset=None):
-        slug_ = self.kwargs.get('word_slug')
-        return get_object_or_404(Words, slug=slug_)
+        word_id = self.kwargs.get('word_id')
+        return get_object_or_404(Words, pk=word_id)
 
     def form_valid(self, form, *args, **kwargs):
         return super(WordsUpdateView, self).form_valid(form, msg='изменено')
@@ -83,32 +68,34 @@ class WordDeleteView(DeleteView):
         messages.error(request, f'Слово {object.word} удалено')
         return super(WordDeleteView, self).delete(self, request, *args, **kwargs)
 
-def add_to_own_words(request, word_id):
+
+class AddToOwnWordsView(View):
     """Добавление слова к своим из списка"""
 
-    word = get_object_or_404(Words, id=word_id)
-    word.pk = None
-    word.author = request.user
-    word.slug = slugify(f'{word.word}-{word.translation}-{request.user}')
-    word.save()
-    messages.success(request, f'Слово {word.word} добавлено')
-    return redirect(request.META.get('HTTP_REFERER'))
+    def get(self, request, word_id):
+        word = get_object_or_404(Words, id=word_id)
+        word.pk = None
+        word.author = request.user
+        word.save()
+        messages.success(request, f'Слово {word.word} добавлено')
+        return redirect(request.META.get('HTTP_REFERER'))
 
 
-def register(request):
+class RegistrationView(View):
     """Регистрация"""
 
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST, error_class=CustomErrorList)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Вы успешно зарегистрировались')
-            return redirect('login')
+    def get(self, request):
+        if request.method == 'POST':
+            form = UserRegisterForm(request.POST, error_class=CustomErrorList)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Вы успешно зарегистрировались')
+                return redirect('login')
+            else:
+                messages.error(request, 'Ошибка регистрации')
         else:
-            messages.error(request, 'Ошибка регистрации')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'mainapp/registration.html', {'form': form})
+            form = UserRegisterForm()
+        return render(request, 'mainapp/registration.html', {'form': form})
 
 
 class SearchWordsView(View):
@@ -135,67 +122,15 @@ class SearchWordsView(View):
         return JsonResponse("Ничего не найдено", status=204, safe=False)
 
 
-def learning(request):
+class LearningView(View):
     """Изучение слов"""
 
-    words_type = request.GET.get('words')
-    is_words_exist = True
-    if words_type == 'own_words':
-        is_words_exist = Words.objects.filter(author=request.user).count() > 0
-    return render(request, 'mainapp/learning.html', {'is_words_exist': is_words_exist})
-
-
-class ReturnNewWordInInputView(View):
-    """Возвращение слова с помощью алгоритма подбора"""
-
-    operation = WordOps()
-
     def get(self, request):
-        word = self.operation.get_word(request)
-        word_lst = word.word.split()
-
-        tenses = [item for sublist in [en.lexeme(i) for i in word_lst] for item in sublist]  # pluralization, comparative, superlative
-        tenses += [item for sublist in
-                   [[en.pluralize(i), en.comparative(i), en.superlative(i)] for i in
-                    word_lst] for item in
-                   sublist]
-
-        stat = word.stat.filter(user=request.user).first()
-        word_dates_stat = list(WordDatesStat.objects.filter(word_stat=stat).values())
-        stat_today = GeneralWordsStat.objects.get_or_create(user=request.user, date=timezone.now())[0]
-        data = {'data': model_to_dict(word, fields=['word', 'translation', 'rusex', 'engex', 'id']),
-                'tenses': tenses,
-                'stat': model_to_dict(stat) if stat else None,
-                'word_dates_stat': word_dates_stat,
-                "stat_today": model_to_dict(stat_today)
-                }
-        return JsonResponse(data)
-
-    def post(self, request):
-        self.operation.create_or_edit_word_stat(request,
-                                                request.POST.get('word_id'),
-                                                request.POST.get('is_correct'))
-        return JsonResponse({'success': 'Success!'}, status=200)
-
-class GetStatView(View):
-    """Возвращение статистики слова"""
-
-    def get(self, request):
-        word_id = int(request.GET.get('word_id'))
-        word = Words.objects.get(pk=word_id)
-        stat = word.stat.filter(user=request.user).first()
-        word_dates_stat = list(WordDatesStat.objects.filter(word_stat=stat).values())
-        word_stat = {
-            'stat': model_to_dict(stat) if stat else None,
-            'word_dates_stat': word_dates_stat
-        }
-
-        return JsonResponse(word_stat)
+        words_type = request.GET.get('words')
+        is_words_exist = True
+        if words_type == 'own_words':
+            is_words_exist = Words.objects.filter(author=request.user).count() > 0
+        return render(request, 'mainapp/learning.html', {'is_words_exist': is_words_exist})
 
 
-class GeneralStatView(View):
-    """Возвращение общей статистики по словам"""
 
-    def get(self, request):
-        general_stat = list(GeneralWordsStat.objects.filter(user=request.user).values())
-        return render(request, 'mainapp/general_stat.html', {'general_stat': json.dumps(general_stat, cls=DjangoJSONEncoder)})

@@ -45,7 +45,7 @@
                 <td class="hide_word" style="text-align: center;">
 
                     {%  if word|has_stat:request.user %}
-                        <a class="fa_fa_icon" title="Статистика" style="cursor: pointer"><i class="fa fa-bar-chart stat_icon"></i></a>
+                        <a class="fa_fa_icon" title="Статистика" style="cursor: pointer"><i class="fa fa-bar-chart stat_icon" data-stat-url="{% url 'word_stat_api' word.id%}" data-dates-stat-url="{% url 'word_dates_stat_api' word.id%}"></i></a>
                     {% else %}
                         <a class="fa_fa_icon" title="Нет статистика" style="cursor: not-allowed"><i class="fa fa-bar-chart stat_icon stat_disabled" style="color: grey"></i></a>
                     {% endif %}
@@ -60,7 +60,7 @@
                         {% endif %}
                     {% endif %}
                     {% if request.GET.words == 'own_words' %}
-                    <a class="fa_fa_icon" href="{% url 'update_words' word.slug %}" title="Редактировать">
+                    <a class="fa_fa_icon" href="{% url 'update_words' word.id %}" title="Редактировать">
                         <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
                     </a>
                     <a class="fa_fa_icon" title="Удалить">
@@ -126,7 +126,6 @@
 {% endif %}
 <script type=text/javascript>
     let a = "{% url 'search_words' %}"
-    let get_stat_url = "{% url 'get_stat' %}"
 </script>
 {% else %}
     <div class="rounded mx-auto d-block" style='margin-top: 10%; text-align: center;'>

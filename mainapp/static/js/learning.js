@@ -1,7 +1,6 @@
 let translation = document.getElementsByClassName('translation')[0];
 let answer = document.getElementById('answer');
 let form_send_answer = document.forms.form_send_answer;
-let form_answer_div = document.getElementsByClassName('form-answer')[0];
 let example_div_en = document.getElementsByClassName('example-en')[0];
 let example_div_ru = document.getElementsByClassName('example-ru')[0];
 let new_word = document.getElementById('new_word');
@@ -118,7 +117,7 @@ function get_width(text, font) {
 }
 
 function get_word() {
-    let promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         is_correct = true;
         $.ajax({
             type: "GET",
@@ -134,15 +133,15 @@ function get_word() {
                     5: .8,
                     6: 1
                 }
-                stat = data['stat'];
-                let word_dates_stat = data['word_dates_stat'];
-                let stat_today = data['stat_today'];
+                stat = data.stat;
+                let word_dates_stat = data.word_dates_stat;
+                let stat_today = data.stat_today;
                 let progress = !stat ? 0 : percents[stat['memorise_lvl']];
                 let is_learned = !stat ? undefined : stat['is_learned'];
                 let new_words = !stat_today ? 0 : stat_today['new_words']
                 let all_words = !stat_today ? 0 : stat_today['correct_answers'] + stat_today['incorrect_answers']
-                tenses = data['tenses'];
-                word = data['data'];
+                tenses = data.tenses;
+                word = data.word;
 
                 $('#new_words_a').text(new_words);
                 $('#all_words_a').text(all_words);
@@ -153,7 +152,6 @@ function get_word() {
                 if (is_learned) {
                     $('#is_learned').show();
                 }
-                // console.log(word['word']);
                 get_example(word);
 
                 if (stat) {
@@ -174,7 +172,6 @@ function get_word() {
             }
         });
     });
-    return promise
 }
 
 function get_example(word) {

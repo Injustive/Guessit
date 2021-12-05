@@ -40,7 +40,7 @@
             <div class="card__face card__face--front">
                 <div class="answer_container">
                     <div class="form-answer">
-                        <form onsubmit="submit_answer_form(); return false" method="POST" action="{% url 'return_new_word_in_input' %}" name="form_send_answer">
+                        <form onsubmit="submit_answer_form(); return false" method="POST" action="{% url 'get_next_word_api' %}" name="form_send_answer">
                             {% csrf_token %}
                             <input class="form-control shadow-none" autofocus type="text" id="answer" placeholder="" name="answer" autocomplete="off">
                         </form>

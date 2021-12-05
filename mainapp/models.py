@@ -4,7 +4,7 @@ from django.core import validators
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
-from slugify import slugify
+from django.core.exceptions import ValidationError
 from django.contrib.postgres.fields import ArrayField
 User = get_user_model()
 
@@ -15,7 +15,7 @@ def get_gap_after_answer():
 
 class Words(models.Model):
     word = models.CharField(max_length=100, verbose_name='Слово', validators=[validators.RegexValidator(
-        regex=r'[а-яА-ЯёЁ]', inverse_match=True, message='Введите слово кирилицей!')])
+        regex=r'[а-яА-ЯёЁ]', inverse_match=True, message='Введите слово латиницей!')])
     translation = models.CharField(max_length=100, verbose_name='Перевод', validators=[validators.RegexValidator(
         regex=r'[а-яА-ЯёЁ]', message='Введите перевод латиницей!')])
     engex = models.CharField(max_length=300, verbose_name="Пример англ.", validators=[validators.RegexValidator(
@@ -23,20 +23,11 @@ class Words(models.Model):
     rusex = models.CharField(max_length=300, verbose_name="Пример русс.", validators=[validators.RegexValidator(
         regex=r'[а-яА-ЯёЁ]', message='Введите пример кирилицей!')])
     photoURL = models.URLField(max_length=1000, verbose_name="Ссылка на миниатюру", blank=True, null=True)
-    slug = models.SlugField(max_length=100, verbose_name="Слаг", unique=True)
     stat = models.ManyToManyField('WordStat', related_name='word')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
 
     def __str__(self):
         return f'{self.word}---{self.translation}'
-
-    def get_absolute_url(self):
-        return reverse('words', kwargs={'slug': self.slug})
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(f'{self.word}-{self.translation}')
-        return super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Слово'
@@ -72,10 +63,9 @@ class WordStat(models.Model):
         verbose_name_plural = 'Статистика слов'
         ordering = ('next_review',)
 
-
 class WordDatesStat(models.Model):
     word_stat = models.ForeignKey(WordStat, on_delete=models.CASCADE, verbose_name='Статистика слова',
-                                  related_name="word_dates_stat" ,null=True)
+                                  related_name="word_dates_stat", null=True)
     date = models.DateField(verbose_name="Дата", auto_now_add=True)
     correct_answers = models.IntegerField(default=0, verbose_name="Правильные ответы")
     incorrect_answers = models.IntegerField(default=0, verbose_name="Неправильные ответы")
@@ -86,7 +76,7 @@ class WordDatesStat(models.Model):
     class Meta:
         verbose_name = 'Статистика слова по датам'
         verbose_name_plural = 'Статистика слов по датам'
-        ordering = ('date',)
+        ordering = ('-date',)
 
 
 class GeneralWordsStat(models.Model):
@@ -104,4 +94,4 @@ class GeneralWordsStat(models.Model):
     class Meta:
         verbose_name = 'Статистика всех слов'
         verbose_name_plural = 'Статистика всех слов'
-        ordering = ('date',)
+        ordering = ('-date',)

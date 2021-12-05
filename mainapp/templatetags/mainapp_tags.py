@@ -1,5 +1,4 @@
 from django import template
-from slugify import slugify
 from django.conf import settings
 from mainapp.models import Words
 register = template.Library()
@@ -16,8 +15,11 @@ def getattr_(value, arg):
 def is_own_word(value, user):
     """Проверка принадлежит ли это слово пользователю или это общее слово"""
 
-    slug = slugify(f'{value.word}-{value.translation}-{user}')
-    return Words.objects.filter(slug=slug).exists()
+    return Words.objects.filter(
+        word=value.word,
+        translation=value.translation,
+        author=user
+    ).exists()
 
 
 @register.filter(name='has_stat')

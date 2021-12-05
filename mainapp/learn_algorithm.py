@@ -95,6 +95,7 @@ class WordOps:
                     return
                 if stat.skip_lvl_flag:
                     # Если слово угадано с 1 попытки, то можно пропустить 1 уровень
+                    stat.next_review = timezone.now() + timedelta(days=REVIEW_TIME.get(memorise_lvl))
                     stat.memorise_lvl += 1
                 else:
                     stat.memorise_coefficient += 1
