@@ -1,14 +1,3 @@
-let stats_icons = $('.stat_icon')
-
-for (let i=0; i<stats_icons.length; i++){
-    stats_icons[i].addEventListener('click', () => {
-        let stat_url = $(stats_icons[i]).attr('data-stat-url');
-        let dates_stat_url = $(stats_icons[i]).attr('data-dates-stat-url');
-        show_stat(stat_url, dates_stat_url);
-    });
-}
-
-
 function show_stat(stat_url, dates_stat_url) {
     let Statistic_w = undefined;
 
@@ -51,14 +40,6 @@ function show_stat(stat_url, dates_stat_url) {
         card.show();
         preloader.show();
         loader.show();
-        card.dimBackground();
-        $('#close_modal_stat').click(() => {
-            card.hide();
-            $.undim();
-            for (let plot of Statistic_w.get_plots()){
-                plot.destroy();
-            }
-        });
     }
 
     Promise.all(
@@ -77,3 +58,7 @@ function show_stat(stat_url, dates_stat_url) {
 		$preloader.delay(250).fadeOut(200);
     });
 }
+let urls = $('#hidden_data')
+let stat_url = urls.attr('data-stat-url');
+let dates_stat_url = urls.attr('data-dates-stat-url');
+show_stat(stat_url, dates_stat_url);
