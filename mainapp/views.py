@@ -90,12 +90,12 @@ class RegistrationView(View):
     
     def post(self, request):
         form = UserRegisterForm(request.POST, error_class=CustomErrorList)
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Вы успешно зарегистрировались')
-                return redirect('login')
-            else:
-                messages.error(request, 'Ошибка регистрации')
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Вы успешно зарегистрировались')
+            return redirect('login')
+        else:
+            messages.error(request, 'Ошибка регистрации')
 
 
 class SearchWordsView(View):
