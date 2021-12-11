@@ -94,8 +94,8 @@ class RegistrationView(View):
             form.save()
             messages.success(request, 'Вы успешно зарегистрировались')
             return redirect('login')
-        else:
-            messages.error(request, 'Ошибка регистрации')
+        messages.error(request, 'Ошибка регистрации')
+        return render(request, 'mainapp/registration.html', {'form': form})
 
 
 class SearchWordsView(View):
